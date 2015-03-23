@@ -1,0 +1,9 @@
+{
+  "name": "Ansible-POC",
+  "description": "A POC to run Ansible from CLI.",
+  "license": "MIT",
+  "dependencies": {
+    "node-ansible": "~0.3.0",
+    "underscore": "~1.8.2"
+  }
+}
