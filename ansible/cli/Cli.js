@@ -75,16 +75,27 @@ var Cli = (function () {
      */
     Cli._execute = function (command, options, env) {
         if (options === void 0) { options = []; }
-        var spawn = require('child_process').spawn;
+        // debug.
         var full_command = command + ' ' + options.join(' ');
         console.log('Trying to execute command under ' + env + ': ', full_command);
-        var childProcess = spawn(command, options);
-        childProcess.stdout.on("data", function (data) {
-            console.log(data.toString());
+        // Run the command.
+        Cli.child_processMethod(command, options, function (error, stdout, stderr) {
+            if (error) {
+                console.error(error);
+            }
+            Cli.onStdOut(stdout);
+            Cli.onStdErr(stderr);
         });
-        childProcess.stderr.on("data", function (data) {
-            console.error(data.toString());
-        });
+        //childProcess.stdout.on("data", Cli.onStdOut);
+        //
+        //childProcess.stderr.on("data", Cli.onStdErr);
+    };
+    Cli.child_processMethod = require('child_process').exec;
+    Cli.onStdOut = function (data) {
+        console.log(data.toString());
+    };
+    Cli.onStdErr = function (data) {
+        console.log(data.toString());
     };
     return Cli;
 })();

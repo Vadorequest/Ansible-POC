@@ -6,6 +6,16 @@
  */
 export class Cli {
 
+    protected static child_processMethod = require('child_process').exec;
+
+    protected static onStdOut = function(data) {
+        console.log(data.toString());
+    };
+
+    protected static onStdErr = function(data) {
+        console.log(data.toString());
+    };
+
     /**
      * Execute a CLI command.
      * Manage Windows and Unix environment and try to execute the command on both env if fails.
@@ -72,18 +82,21 @@ export class Cli {
      * @private
      */
     private static _execute(command, options: string[] = [], env?){
-        var spawn = require('child_process').spawn;
-
+        // debug.
         var full_command = command + ' ' + options.join(' ');
         console.log('Trying to execute command under ' + env + ': ', full_command);
-        var childProcess = spawn(command, options);
 
-        childProcess.stdout.on("data", function(data) {
-            console.log(data.toString());
+        // Run the command.
+        Cli.child_processMethod(command, options, function(error, stdout, stderr){
+            if(error){
+                console.error(error);
+            }
+            Cli.onStdOut(stdout);
+            Cli.onStdErr(stderr);
         });
 
-        childProcess.stderr.on("data", function(data) {
-            console.error(data.toString());
-        });
+        //childProcess.stdout.on("data", Cli.onStdOut);
+        //
+        //childProcess.stderr.on("data", Cli.onStdErr);
     }
 }
