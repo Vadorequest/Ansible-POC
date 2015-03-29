@@ -5,16 +5,16 @@ You should get something like this:
 ```
 /usr/bin/node test.js
 Try running simple Ansible command:
+Trying to execute command under Windows:  undefined /c ansible-playbook test.yml
 ------------- Windows "ansible-playbook" command failed, trying Unix... ---------------
-Trying to execute command under Windows:  undefined /c,ansible-playbook,test.yml
 undefined
 Trying to execute command under Unix:  ansible-playbook test.yml
-------------- Windows "ansible-playbook" command failed, trying Unix... ---------------
 ansible-playbook has been automatically executed. (Unix)
 Try running correct Ansible command:
-Trying to execute command under Windows:  undefined /c,ansible-playbook,-v,-M ../library,-i inventory,-e '@credentials.yml',test.yml
+Trying to execute command under Windows:  undefined /c ansible-playbook -v -M ../library -i inventory -e '@credentials.yml' test.yml
 undefined
-Trying to execute command under Unix:  ansible-playbook -v,-M ../library,-i inventory,-e '@credentials.yml',test.yml
+Trying to execute command under Unix:  ansible-playbook -v -M ../library -i inventory -e '@credentials.yml' test.yml
+------------- Windows "ansible-playbook" command failed, trying Unix... ---------------
 ansible-playbook has been automatically executed. (Unix)
 ERROR: Unable to find an inventory file, specify one with -i ?
 

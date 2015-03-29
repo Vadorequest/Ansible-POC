@@ -74,7 +74,7 @@ export class Cli {
     private static _execute(command, options: string[] = [], env?){
         var spawn = require('child_process').spawn;
 
-        var full_command = command + ' ' + options;
+        var full_command = command + ' ' + options.join(' ');
         console.log('Trying to execute command under ' + env + ': ', full_command);
         var childProcess = spawn(command, options);
 

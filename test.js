@@ -18,5 +18,5 @@ AnsiblePlaybookCli.exec([
     '-M ../library',
     '-i inventory',
     "-e '@credentials.yml'",
-    'test.yml',
+    'test.yml'
 ]);
