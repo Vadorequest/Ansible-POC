@@ -18,17 +18,17 @@ var Cli = (function () {
      * @param callbackErrorUnix         Failure on Unix env.
      */
     Cli.execute = function (command, options, callback, callbackErrorWindows, callbackErrorUnix) {
+        //        Cli.windows(command, options, callback, function(){
+        //            callbackErrorWindows(command, options, 'Windows');
         if (options === void 0) { options = []; }
-        Cli.windows(command, options, callback, function () {
-            callbackErrorWindows(command, options, 'Windows');
-            try {
-                Cli.unix(command, options, callback, callbackErrorUnix);
-            }
-            catch (e) {
-                console.log('------------- Failed to perform the command: "' + command + '" on all environments. -------------');
-                console.log(e);
-            }
-        });
+        try {
+            Cli.unix(command, options, callback, callbackErrorUnix);
+        }
+        catch (e) {
+            console.log('------------- Failed to perform the command: "' + command + '" on all environments. -------------');
+            console.log(e);
+        }
+        //        });
     };
     /**
      * Execute a command on Windows environment.
@@ -75,27 +75,19 @@ var Cli = (function () {
      */
     Cli._execute = function (command, options, env) {
         if (options === void 0) { options = []; }
-        // debug.
+        var child_proces = require('child_process');
         var full_command = command + ' ' + options.join(' ');
         console.log('Trying to execute command under ' + env + ': ', full_command);
         // Run the command.
-        Cli.child_processMethod(command, options, function (error, stdout, stderr) {
+        child_proces.exec(full_command, function (error, stdout, stderr) {
             if (error) {
-                console.error(error);
+                throw error;
             }
-            Cli.onStdOut(stdout);
-            Cli.onStdErr(stderr);
+            if (stderr) {
+                throw stderr;
+            }
+            console.log(stdout);
         });
-        //childProcess.stdout.on("data", Cli.onStdOut);
-        //
-        //childProcess.stderr.on("data", Cli.onStdErr);
-    };
-    Cli.child_processMethod = require('child_process').exec;
-    Cli.onStdOut = function (data) {
-        console.log(data.toString());
-    };
-    Cli.onStdErr = function (data) {
-        console.log(data.toString());
     };
     return Cli;
 })();

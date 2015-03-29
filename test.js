@@ -7,10 +7,10 @@ _ = require('lodash');
 
 var AnsiblePlaybookCli = require('./ansible/cli/AnsiblePlaybookCli').AnsiblePlaybookCli;
 
-console.log('Try running simple Ansible command:')
-AnsiblePlaybookCli.exec([
-    'test.yml'
-]);
+//console.log('Try running simple Ansible command:')
+//AnsiblePlaybookCli.exec([
+//    'test.yml'
+//]);
 
 console.log('Try running correct Ansible command:')
 AnsiblePlaybookCli.exec([

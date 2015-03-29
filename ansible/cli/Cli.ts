@@ -6,16 +6,6 @@
  */
 export class Cli {
 
-    protected static child_processMethod = require('child_process').exec;
-
-    protected static onStdOut = function(data) {
-        console.log(data.toString());
-    };
-
-    protected static onStdErr = function(data) {
-        console.log(data.toString());
-    };
-
     /**
      * Execute a CLI command.
      * Manage Windows and Unix environment and try to execute the command on both env if fails.
@@ -28,8 +18,8 @@ export class Cli {
      * @param callbackErrorUnix         Failure on Unix env.
      */
     public static execute(command: string, options: string[] = [], callback?: any, callbackErrorWindows?: any, callbackErrorUnix?: any){
-        Cli.windows(command, options, callback, function(){
-            callbackErrorWindows(command, options, 'Windows');
+//        Cli.windows(command, options, callback, function(){
+//            callbackErrorWindows(command, options, 'Windows');
 
             try{
                 Cli.unix(command, options, callback, callbackErrorUnix);
@@ -37,7 +27,7 @@ export class Cli {
                 console.log('------------- Failed to perform the command: "' + command + '" on all environments. -------------');
                 console.log(e);
             }
-        });
+//        });
     }
 
     /**
@@ -82,21 +72,21 @@ export class Cli {
      * @private
      */
     private static _execute(command, options: string[] = [], env?){
-        // debug.
+        var child_proces = require('child_process');
         var full_command = command + ' ' + options.join(' ');
+
         console.log('Trying to execute command under ' + env + ': ', full_command);
 
         // Run the command.
-        Cli.child_processMethod(command, options, function(error, stdout, stderr){
+        child_proces.exec(full_command, function(error, stdout, stderr){
             if(error){
-                console.error(error);
+                throw error;
             }
-            Cli.onStdOut(stdout);
-            Cli.onStdErr(stderr);
-        });
+            if(stderr){
+                throw stderr;
+            }
 
-        //childProcess.stdout.on("data", Cli.onStdOut);
-        //
-        //childProcess.stderr.on("data", Cli.onStdErr);
+            console.log(stdout);
+        });
     }
 }
