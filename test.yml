@@ -1,0 +1,319 @@
+---
+- name: nxos
+  connection: local
+  hosts: test
+  gather_facts: False
+  tasks:
+  - name: setup
+    ignore_errors: True
+    nxos_command:
+      username: "{{ nxos_username }}"
+      password: "{{ nxos_password }}"
+      hostname: "{{ inventory_hostname }}"
+      command:
+        - configure terminal
+        - default interface Ethernet2/22
+        - default interface Ethernet2/23
+        - no interface port-channel30
+        - no vlan 1985
+        - no interface vlan 1985
+
+  - name: run nxos_command
+    nxos_command:
+      username: "{{ nxos_username }}"
+      password: "{{ nxos_password }}"
+      hostname: "{{ inventory_hostname }}"
+      command: show version
+    register: result
+
+  - name: assert that nxos_command.output is not None
+    assert:
+      that: "result['output'] != None"
+
+  - name: create port-channel 30 with no members
+    nxos_portchannel:
+      name: port-channel30
+      description: ANSIBLE TEST
+      vlan: 100
+      type: access
+      username: "{{ nxos_username }}"
+      password: "{{ nxos_password }}"
+      hostname: "{{ inventory_hostname }}"
+    register: result
+
+  - name: assert that the port-channel was created
+    assert:
+      that:
+        - "result.commands[0] == 'configure terminal'"
+        - "result.commands[1] == 'interface port-channel30'"
+        - "result.commands[2] == 'description ANSIBLE TEST'"
+        - "result.commands[3] == 'switchport'"
+        - "result.commands[4] == 'switchport access vlan 100'"
+        # - "result.commands[5] == 'priority-flow-control mode off'"
+        - "result.commands[5] == 'spanning-tree guard root'"
+        - "result.commands[6] == 'no lacp suspend-individual'"
+        - "result.commands[7] == 'mtu 9216'"
+        - "result.commands[8] == 'end'"
+
+  - name: update port-channel 30
+    nxos_portchannel:
+      name: port-channel30
+      description: ANSIBLE TEST
+      vlan: 101
+      type: access
+      members:
+        - Ethernet2/22
+        - Ethernet2/23
+      username: "{{ nxos_username }}"
+      password: "{{ nxos_password }}"
+      hostname: "{{ inventory_hostname }}"
+    register: result
+
+  - name: assert that the port-channel was updated
+    assert:
+      that:
+        - "result.commands[0] == 'configure terminal'"
+        - "result.commands[1] == 'interface port-channel30'"
+        - "result.commands[2] == 'switchport'"
+        - "result.commands[3] == 'switchport access vlan 101'"
+        - "result.commands[4] == 'end'"
+        - "result.commands[5] == 'configure terminal'"
+        - "result.commands[6] == 'interface Ethernet2/22'"
+        - "result.commands[7] == 'description ANSIBLE TEST'"
+        - "result.commands[8] == 'switchport'"
+        - "result.commands[9] == 'switchport access vlan 101'"
+        - "result.commands[10] == 'spanning-tree guard root'"
+        - "result.commands[11] == 'mtu 9216'"
+        - "result.commands[12] == 'channel-group 30 mode active'"
+        - "result.commands[13] == 'end'"
+        - "result.commands[14] == 'configure terminal'"
+        - "result.commands[15] == 'interface Ethernet2/23'"
+        - "result.commands[16] == 'description ANSIBLE TEST'"
+        - "result.commands[17] == 'switchport'"
+        - "result.commands[18] == 'switchport access vlan 101'"
+        - "result.commands[19] == 'spanning-tree guard root'"
+        - "result.commands[20] == 'mtu 9216'"
+        - "result.commands[21] == 'channel-group 30 mode active'"
+        - "result.commands[22] == 'end'"
+        - result.previous.name == 'port-channel30'
+        - result.previous.description == 'ANSIBLE TEST'
+        - result.previous.vlan == 100
+
+  - name: repeat update port-channel 30
+    nxos_portchannel:
+      name: port-channel30
+      description: ANSIBLE TEST
+      vlan: 101
+      type: access
+      members:
+        - Ethernet2/22
+        - Ethernet2/23
+      username: "{{ nxos_username }}"
+      password: "{{ nxos_password }}"
+      hostname: "{{ inventory_hostname }}"
+    register: result
+
+  - name: assert that nxos_command is idempotent
+    assert:
+      that: result.changed != true
+
+  - name: create vlan 1985
+    nxos_vlan:
+      name: ANSIBLE_TEST
+      id: 1985
+      username: "{{ nxos_username }}"
+      password: "{{ nxos_password }}"
+      hostname: "{{ inventory_hostname }}"
+    register: result
+
+  - name: assert that vlan was created
+    assert:
+      that:
+        - "result.commands[0] == 'configure terminal'"
+        - "result.commands[1] == 'vlan 1985'"
+        - "result.commands[2] == 'name ANSIBLE_TEST'"
+        - "result.commands[3] == 'end'"
+
+  - name: update vlan 1985
+    nxos_vlan:
+      name: ANSIBLE_TEST2
+      id: 1985
+      username: "{{ nxos_username }}"
+      password: "{{ nxos_password }}"
+      hostname: "{{ inventory_hostname }}"
+    register: result
+
+  - name: assert that vlan was updated
+    assert:
+      that:
+        - "result.changed == True"
+        - "result.commands[0] == 'configure terminal'"
+        - "result.commands[1] == 'vlan 1985'"
+        - "result.commands[2] == 'name ANSIBLE_TEST2'"
+        - "result.commands[3] == 'end'"
+
+  - name: repeat update vlan 1985
+    nxos_vlan:
+      name: ANSIBLE_TEST2
+      id: 1985
+      username: "{{ nxos_username }}"
+      password: "{{ nxos_password }}"
+      hostname: "{{ inventory_hostname }}"
+    register: result
+
+  - name: assert that nxos_vlan is idempotent
+    assert:
+      that: result.changed != True
+
+  - name: Configure HSRP on vlan
+    nxos_hsrp:
+      id: 1985
+      ip: 192.0.2.1
+      username: "{{ nxos_username }}"
+      password: "{{ nxos_password }}"
+      hostname: "{{ inventory_hostname }}"
+    register: result
+
+  - name: assert that nxos_hsrp changed
+    assert:
+      that: result.changed == True
+
+  - name: Repeat configure HSRP on vlan
+    nxos_hsrp:
+      id: 1985
+      ip: 192.0.2.1
+      username: "{{ nxos_username }}"
+      password: "{{ nxos_password }}"
+      hostname: "{{ inventory_hostname }}"
+    register: result
+
+  - name: assert that nxos_hsrp did not change
+    assert:
+      that: result.changed == False
+
+  - name: Configure SVI on vlan
+    nxos_svi:
+      id: 1985
+      ip: "192.0.2.33/24"
+      username: "{{ nxos_username }}"
+      password: "{{ nxos_password }}"
+      hostname: "{{ inventory_hostname }}"
+      description: Ansible SVI Test
+      dhcp_relay_ips:
+      - 192.0.2.2
+      - 192.0.2.3
+    register: result
+
+  - name: assert that SVI changed
+    assert:
+      that: result.changed == True
+
+  - name: assert that SVI has the desired configuration state
+    assert:
+      that:
+        - "result.new.description == 'Ansible SVI Test'"
+        - "result.new.ip == '192.0.2.33/24'"
+        - "result.new.dhcp_relays[0] == '192.0.2.2'"
+        - "result.new.dhcp_relays[1] == '192.0.2.3'"
+        # We don't test properties that don't have a module param, like redirects
+        # or PIM mode, they are hardcoded in the module and so in case of a
+        # future change we want this test to still succeed. However, they are
+        # checked indeed to set result.changed .
+
+  - name: Update SVI on vlan
+    nxos_svi:
+      id: 1985
+      ip: "192.0.2.34/24"
+      username: "{{ nxos_username }}"
+      password: "{{ nxos_password }}"
+      hostname: "{{ inventory_hostname }}"
+      description: Ansible SVI Test
+      dhcp_relay_ips:
+      - 192.0.2.4
+    register: result
+
+  - name: assert that SVI was updated
+    assert:
+      that: result.changed == True
+
+  - name: assert that SVI was updated to the desired configuration state
+    assert:
+      that:
+        - "result.new.description == 'Ansible SVI Test'"
+        - "result.new.ip == '192.0.2.34/24'"
+        - "result.new.dhcp_relays[0] == '192.0.2.4'"
+        - "result.new.dhcp_relays|length == 1"
+
+  - name: Repeat SVI on vlan
+    nxos_svi:
+      id: 1985
+      ip: "192.0.2.34/24"
+      username: "{{ nxos_username }}"
+      password: "{{ nxos_password }}"
+      hostname: "{{ inventory_hostname }}"
+      description: Ansible SVI Test
+      dhcp_relay_ips:
+      - 192.0.2.4
+    register: result
+
+  - name: assert that SVI did not change
+    assert:
+      that: result.changed == False
+
+
+  - name: Configure OSPF on vlan
+    nxos_ospf:
+      vlan_id: 1985
+      cost: 100
+      router:
+        process: 222
+        area: 10.45.86.0
+      authentication:
+        type: "message-digest"
+        message_digest:
+          key_id: 1
+          encryption: 3
+          key: ITNET
+      username: "{{ nxos_username }}"
+      password: "{{ nxos_password }}"
+      hostname: "{{ inventory_hostname }}"
+    register: result
+
+  - name: assert that OSPF was updated
+    assert:
+      that:
+        - result.changed == True
+        - result.changed_authentication_only == False
+
+  - name: assert that OSPF was updated to the desired configuration state
+    assert:
+      that:
+        - "result.new.router.process == '222'"
+        - "result.new.router.area == '10.45.86.0'"
+        - "result.new.cost == 100"
+
+  - name: Repeat configure OSPF on vlan
+    nxos_ospf:
+      vlan_id: 1985
+      cost: 100
+      router:
+        process: "222"
+        area: 10.45.86.0
+      authentication:
+        type: "message-digest"
+        message_digest:
+          key_id: 1
+          encryption: 3
+          key: ITNET
+      username: "{{ nxos_username }}"
+      password: "{{ nxos_password }}"
+      hostname: "{{ inventory_hostname }}"
+    register: result
+
+  - name: assert that nxos_ospf did not change (except authentication)
+    assert:
+      that:
+          - "result.changed == True" # because of password encryption
+          - result.changed_authentication_only == True
+
+
