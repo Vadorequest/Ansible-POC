@@ -1,4 +1,4 @@
-///<reference path='./../d.ts/defLoader.d.ts'/>
+///<reference path='./d.ts/defLoader.d.ts'/>
 var __extends = this.__extends || function (d, b) {
     for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
     function __() { this.constructor = d; }
@@ -18,18 +18,26 @@ var AnsiblePlaybookCli = (function (_super) {
     /**
      * Execute a Ansible Playbook command.
      * @param options  Options of the command. ('watch')
+     * @param callback
+     * @param callbackError
      */
-    AnsiblePlaybookCli.exec = function (options) {
+    AnsiblePlaybookCli.exec = function (options, callback, callbackError) {
         if (options === void 0) { options = []; }
-        Cli.execute(AnsiblePlaybookCli._command, options, function (command, args, env) {
-            console.log('ansible-playbook has been automatically executed. (' + env + ')');
-        }, function (command, args, env, e) {
-            console.error('------------- Windows "' + command + '" command failed, trying Unix... ---------------');
-            console.log(e);
-        }, function (command, args, env, e) {
-            console.error('------------- Unix "' + command + '" command failed too. ---------------');
-            console.log(e);
-        });
+        Cli.execute(AnsiblePlaybookCli._command, options, callback || AnsiblePlaybookCli.defaultCallback, callbackError || AnsiblePlaybookCli.defaultCallbackError);
+    };
+    /**
+     * Default success callback if none is provided.
+     */
+    AnsiblePlaybookCli.defaultCallback = function (message, command) {
+        console['success']('Successful command: "' + command + '"');
+        console['success'](message);
+    };
+    /**
+     * Default error callback if none is provided.
+     */
+    AnsiblePlaybookCli.defaultCallbackError = function (message, command) {
+        console['error']('FAILED command: "' + command + '"');
+        console['error'](message);
     };
     /**
      * Command name to execute.
