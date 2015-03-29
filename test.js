@@ -5,7 +5,7 @@
  */
 _ = require('lodash');
 
-var AnsiblePlaybookCli = require('./AnsiblePlaybookCli').AnsiblePlaybookCli;
+var AnsiblePlaybookCli = require('./ansible/cli/AnsiblePlaybookCli').AnsiblePlaybookCli;
 
 console.log('Try running simple Ansible command:')
 AnsiblePlaybookCli.exec([

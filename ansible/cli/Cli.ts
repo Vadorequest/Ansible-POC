@@ -1,4 +1,4 @@
-///<reference path='./defLoader.d.ts'/>
+///<reference path='./../d.ts/defLoader.d.ts'/>
 
 /**
  * Helper to use the Command Line Interface (CLI) easily with both Windows and Unix environments.

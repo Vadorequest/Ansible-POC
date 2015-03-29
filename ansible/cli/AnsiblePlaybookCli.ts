@@ -1,4 +1,4 @@
-///<reference path='./defLoader.d.ts'/>
+///<reference path='./../d.ts/defLoader.d.ts'/>
 
 import cli = require('./Cli');
 var Cli = cli.Cli;
