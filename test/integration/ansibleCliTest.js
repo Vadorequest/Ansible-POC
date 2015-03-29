@@ -4,6 +4,7 @@ var expect = chai.expect;
 var sinon = require('sinon');
 var shell = require('shelljs');
 var assert = require('assert');
+var fs = require('fs');
 
 var sinonChai = require("sinon-chai");
 var chaiAsPromised = require('chai-as-promised');
@@ -25,9 +26,16 @@ describe('ansible-playbook', function(){
         });
 
         it('should be in the ansible working folder', function(){
-            shell.cd(rootFolder);
+            if(fs.existsSync(rootFolder)){
+                shell.cd(rootFolder);
 
-            assert.equal(shell.pwd(), rootFolder)
+                assert.equal(shell.pwd(), rootFolder);
+            }else{
+                shell.cd(rootFolder);
+
+                // If the folder doesn't exist, then we should be in the /home directory.
+                assert.equal(shell.pwd(), '/home');
+            }
         });
     });
 
