@@ -15,39 +15,6 @@ export class Cli {
      * @param callbackError
      */
     public static execute(command: string, options: string[] = [], callback?: any, callbackError?: any){
-        try{
-            Cli.unix(command, options, callback, callbackError);
-        }catch(e){
-            console.error(e);
-        }
-    }
-
-    /**
-     * Execute a command on Unix environment.
-     *
-     * @param command       Command to execute. ('grunt')
-     * @param options       Options of the command. ('watch')
-     * @param callback      Success callback.
-     * @param callbackError Failure callback.
-     */
-    public static unix(command: string, options: string[] = [], callback?: any, callbackError?: any){
-        try{
-            Cli._execute(command, options, callback, callbackError);
-        }catch(e){
-            console.error(e);
-        }
-    }
-
-    /**
-     * Execute a command no matters what's the environment.
-     *
-     * @param command   Command to execute. ('grunt')
-     * @param options   Options of the command. ('watch')
-     * @param callback
-     * @param callbackError
-     * @private
-     */
-    private static _execute(command, options: string[] = [], callback?, callbackError?){
         var child_proces = require('child_process');
         var full_command = command + ' ' + options.join(' ');
 

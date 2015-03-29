@@ -16,41 +16,6 @@ var Cli = (function () {
      */
     Cli.execute = function (command, options, callback, callbackError) {
         if (options === void 0) { options = []; }
-        try {
-            Cli.unix(command, options, callback, callbackError);
-        }
-        catch (e) {
-            console.error(e);
-        }
-    };
-    /**
-     * Execute a command on Unix environment.
-     *
-     * @param command       Command to execute. ('grunt')
-     * @param options       Options of the command. ('watch')
-     * @param callback      Success callback.
-     * @param callbackError Failure callback.
-     */
-    Cli.unix = function (command, options, callback, callbackError) {
-        if (options === void 0) { options = []; }
-        try {
-            Cli._execute(command, options, callback, callbackError);
-        }
-        catch (e) {
-            console.error(e);
-        }
-    };
-    /**
-     * Execute a command no matters what's the environment.
-     *
-     * @param command   Command to execute. ('grunt')
-     * @param options   Options of the command. ('watch')
-     * @param callback
-     * @param callbackError
-     * @private
-     */
-    Cli._execute = function (command, options, callback, callbackError) {
-        if (options === void 0) { options = []; }
         var child_proces = require('child_process');
         var full_command = command + ' ' + options.join(' ');
         console.info('Trying to execute command: ', full_command);
