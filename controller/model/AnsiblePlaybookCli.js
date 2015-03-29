@@ -23,7 +23,7 @@ var AnsiblePlaybookCli = (function (_super) {
      */
     AnsiblePlaybookCli.exec = function (options, callback, callbackError) {
         if (options === void 0) { options = []; }
-        Cli.execute(AnsiblePlaybookCli._command, options, callback || AnsiblePlaybookCli.defaultCallback, callbackError || AnsiblePlaybookCli.defaultCallbackError);
+        return Cli.execute(AnsiblePlaybookCli._command, options, callback || AnsiblePlaybookCli.defaultCallback, callbackError || AnsiblePlaybookCli.defaultCallbackError);
     };
     /**
      * Default success callback if none is provided.

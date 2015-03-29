@@ -7,7 +7,7 @@ var chaiAsPromised = require('chai-as-promised');
 chai.use(sinonChai);
 chai.use(chaiAsPromised);
 
-var AnsiblePlaybookCli = require('./../models/AnsiblePlaybookCli').AnsiblePlaybookCli;
+var AnsiblePlaybookCli = require('./../../controller/model/AnsiblePlaybookCli').AnsiblePlaybookCli;
 
 /**
  * TODO Doesn't work since the operation is async and the mocha test is sync, don't know how to deal with that yet...

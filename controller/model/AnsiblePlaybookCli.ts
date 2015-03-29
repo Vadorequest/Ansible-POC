@@ -38,7 +38,7 @@ export class AnsiblePlaybookCli extends cli.Cli {
      * @param callbackError
      */
     public static exec(options: string[] = [], callback?, callbackError?){
-        Cli.execute(
+        return Cli.execute(
             AnsiblePlaybookCli._command,
             options,
             callback || AnsiblePlaybookCli.defaultCallback,
