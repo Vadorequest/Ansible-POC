@@ -7,7 +7,7 @@ var chaiAsPromised = require('chai-as-promised');
 chai.use(sinonChai);
 chai.use(chaiAsPromised);
 
-var AnsiblePlaybookCli = require('./../modules/AnsiblePlaybookCli').AnsiblePlaybookCli;
+var AnsiblePlaybookCli = require('./../models/AnsiblePlaybookCli').AnsiblePlaybookCli;
 
 /**
  * TODO Doesn't work since the operation is async and the mocha test is sync, don't know how to deal with that yet...
@@ -23,11 +23,25 @@ describe('ansible-playbook', function(){
         });
     });*/
 
+    var execSpy;
+
+    before(function () {
+        execSpy = sinon.spy(require('shelljs'), 'exec');
+    });
+
+    beforeEach(function() {
+        execSpy.reset();
+    });
+
     it('should execute the test playbook', function (done) {
-        expect(AnsiblePlaybookCli.exec(['test.yml'])).to.be.fulfilled.then(function () {
-            expect(execSpy).to.be.calledWith('test.yml');
+        expect(AnsiblePlaybookCli.exec(['test.yml'], function(message, command){
+            command.should.be.equal('ansible-playbook test.yml');
             done();
-        }).done();
+        }, function(message, command, error){
+            command.should.be.equal('ansible-playbook test.yml');
+            done();
+        }));
+
     });
 
     //describe('complex', function(){
