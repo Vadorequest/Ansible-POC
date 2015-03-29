@@ -8,7 +8,7 @@ AnsiblePlaybookCli.exec([
     '-M ../library',
     '-i inventory',
     "-e '@credentials.yml'",
-    'test.yml'
+    '../test.yml'
 ], function(message, command){
     console.success(message, command);
 }, function(message, command, error){

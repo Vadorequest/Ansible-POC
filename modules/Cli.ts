@@ -57,8 +57,9 @@ export class Cli {
         child_proces.exec(full_command, function(error, stdout, stderr){
             if(stderr){
                 callbackError(stderr, full_command, error);
-            }
-            if(stdout){
+            } else if(stdout.substring(0, 5).toUpperCase() === 'ERROR') {
+                callbackError(stdout, full_command, stdout);// Special case, it's not an error as it, but it's an error for the final user, no exception is raised automatically.
+            } else if(stdout){
                 callback(stdout, full_command);
             }
         });
