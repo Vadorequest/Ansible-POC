@@ -11,7 +11,7 @@ var chaiAsPromised = require('chai-as-promised');
 chai.use(sinonChai);
 chai.use(chaiAsPromised);
 
-var AnsiblePlaybookCli = require('./../../controller/model/AnsiblePlaybookCli').AnsiblePlaybookCli;
+var AnsiblePlaybookCli = require('./../../../controller/model/AnsiblePlaybookCli').AnsiblePlaybookCli;
 var rootFolder = '/home/vagrant/ansible-nxos/test';
 
 /**

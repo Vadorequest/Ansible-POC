@@ -20,14 +20,26 @@ export class Cli {
         console.info('Trying to execute command: ', full_command);
 
         // Run the command.
-        child_proces.exec(full_command, function(error, stdout, stderr){
+        var cli = child_proces.exec(full_command, function(error, stdout, stderr){
             if(stderr){
                 callbackError(stderr, full_command, error);
             } else if(stdout.substring(0, 5).toUpperCase() === 'ERROR') {
                 callbackError(stdout, full_command, stdout);// Special case, it's not an error as it, but it's an error for the final user, no exception is raised automatically.
-            } else if(stdout){
+            }
+
+            if(stdout){
                 callback(stdout, full_command);
             }
+        });
+
+        cli.stdout.on('data', function(data) {
+            callback(data, full_command);
+        });
+        cli.stderr.on('data', function(data) {
+            callbackError(data, full_command);
+        });
+        cli.on('close', function(code) {
+            callback("'close' event detected: " + code, full_command);
         });
 
         return full_command;

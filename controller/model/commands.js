@@ -20,4 +20,5 @@ AnsiblePlaybookCli.exec([
     console.error('An unexpected error happened during the following command execution:');
     console.warn(command);
     console.error(error);
+    console.error(message);
 });
