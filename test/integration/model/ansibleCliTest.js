@@ -1,8 +1,8 @@
-var mocha = require('mocha');
+//var mocha = require('mocha');
 var chai = require('chai');
 var expect = chai.expect;
-var sinon = require('sinon');
-var shell = require('shelljs');
+//var sinon = require('sinon');
+//var shell = require('shelljs');
 var assert = require('assert');
 var fs = require('fs');
 
