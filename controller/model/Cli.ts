@@ -14,34 +14,34 @@ export class Cli {
      * @param callbackError
      */
     public static execute(command: string, options: string[] = [], callback?: any, callbackError?: any){
-        var child_proces = require('child_process');
-        var full_command = command + ' ' + options.join(' ');
+        var childProcess = require('child_process');
+        var fullCommand = command + ' ' + options.join(' ');
 
-        console.info('Trying to execute command: ', full_command);
+        console.info('Trying to execute command: ', fullCommand);
 
         // Run the command.
-        var cli = child_proces.exec(full_command, function(error, stdout, stderr){
+        var cli = childProcess.exec(fullCommand, function(error, stdout, stderr){
             if(stderr){
-                callbackError(stderr, full_command, error);
+                callbackError(stderr, fullCommand, error);
             } else if(stdout.substring(0, 5).toUpperCase() === 'ERROR') {
-                callbackError(stdout, full_command, stdout);// Special case, it's not an error as it, but it's an error for the final user, no exception is raised automatically.
+                callbackError(stdout, fullCommand, stdout);// Special case, it's not an error as it, but it's an error for the final user, no exception is raised automatically.
             }
 
             if(stdout){
-                callback(stdout, full_command);
+                callback(stdout, fullCommand);
             }
         });
 
         cli.stdout.on('data', function(data) {
-            callback(data, full_command);
+            callback(data, fullCommand);
         });
         cli.stderr.on('data', function(data) {
-            callbackError(data, full_command);
+            callbackError(data, fullCommand, data);
         });
         cli.on('close', function(code) {
-            callback("'close' event detected: " + code, full_command);
+            callback("'close' event detected: " + code, fullCommand);
         });
 
-        return full_command;
+        return fullCommand;
     }
 }

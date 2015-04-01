@@ -17,8 +17,13 @@ AnsiblePlaybookCli.exec([
 ], function(message, command){
     console.success(message, command);
 }, function(message, command, error){
-    console.error('An unexpected error happened during the following command execution:');
-    console.warn(command);
-    console.error(error);
-    console.error(message);
+    if(typeof error !== 'undefined'){
+        console.error('An unexpected error happened during the following command execution:');
+        console.warn(command);
+        console.error(error);
+    }
+
+    if(error !== message && typeof message !== 'undefined'){
+        console.warn(message);
+    }
 });
