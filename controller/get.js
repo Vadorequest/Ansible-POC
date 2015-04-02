@@ -10,24 +10,26 @@ module.exports = function() {
         return Promise.try(function() {
             req.log.trace('controller:vlans:get')
 
-            console.log(req.body && req.body.id ? req.body.id : 'No Vlan ID specified.');
+            if(req.body && req.body.id){
+                return command.VlanCommand(function(message, command){
+                    console.success(message, command);
+                    return message;
+                }, function(message, command, error){
+                    if(typeof error !== 'undefined'){
+                        console.error('An unexpected error happened during the following command execution:');
+                        console.warn(command);
+                        console.error(error);
+                    }
 
-            return command.VlanCommand(function(message, command){
-                console.success(message, command);
-                return message;
-            }, function(message, command, error){
-                if(typeof error !== 'undefined'){
-                    console.error('An unexpected error happened during the following command execution:');
-                    console.warn(command);
-                    console.error(error);
-                }
+                    if(error !== message && typeof message !== 'undefined'){
+                        console.warn(message);
+                    }
 
-                if(error !== message && typeof message !== 'undefined'){
-                    console.warn(message);
-                }
-
-                return error || message || command;
-            });
+                    return error || message || command;
+                });
+            }else{
+                console.log('No Vlan ID specified.');
+            }
         })
             .then(function(value) {
                 res.send(value)
