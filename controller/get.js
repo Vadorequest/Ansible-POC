@@ -10,6 +10,8 @@ module.exports = function() {
         return Promise.try(function() {
             req.log.trace('controller:vlans:get')
 
+            console.log(req.body && req.body.id ? req.body.id : 'No Vlan ID specified.');
+
             return command.VlanCommand(function(message, command){
                 console.success(message, command);
                 return message;
