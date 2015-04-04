@@ -2,7 +2,7 @@
 var chai = require('chai');
 var expect = chai.expect;
 //var sinon = require('sinon');
-//var shell = require('shelljs');
+var shell = require('shelljs');
 var assert = require('assert');
 var fs = require('fs');
 

@@ -19,29 +19,45 @@ export class Cli {
 
         console.info('Trying to execute command: ', fullCommand);
 
-        // Run the command.
-        var cli = childProcess.exec(fullCommand, function(error, stdout, stderr){
-            if(stderr){
-                callbackError(stderr, fullCommand, error);
-            } else if(stdout.substring(0, 5).toUpperCase() === 'ERROR') {
-                callbackError(stdout, fullCommand, stdout);// Special case, it's not an error as it, but it's an error for the final user, no exception is raised automatically.
-            }
+        var cli = childProcess.spawn(command, options);
 
-            if(stdout){
-                callback(stdout, fullCommand);
-            }
-        });
-
-        cli.stdout.on('data', function(data) {
+        cli.stdout.on("data", function(data) {
             callback(data, fullCommand);
         });
-        cli.stderr.on('data', function(data) {
+
+        cli.stderr.on("data", function(data) {
             callbackError(data, fullCommand, data);
         });
+
         cli.on('close', function(code) {
             callback("'close' event detected: " + code, fullCommand);
         });
 
         return fullCommand;
+
+//
+//        // Run the command.
+//        var cli = childProcess.exec(fullCommand, function(error, stdout, stderr){
+//            if(stderr){
+//                callbackError(stderr, fullCommand, error);
+//            } else if(stdout.substring(0, 5).toUpperCase() === 'ERROR') {
+//                callbackError(stdout, fullCommand, stdout);// Special case, it's not an error as it, but it's an error for the final user, no exception is raised automatically.
+//            }
+//
+//            if(stdout){
+//                callback(stdout, fullCommand);
+//            }
+//        });
+//
+//        cli.stdout.on('data', function(data) {
+//            callback(data, fullCommand);
+//        });
+//        cli.stderr.on('data', function(data) {
+//            callbackError(data, fullCommand, data);
+//        });
+//        cli.on('close', function(code) {
+//            callback("'close' event detected: " + code, fullCommand);
+//        });
+//
     }
 }
