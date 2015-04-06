@@ -14,6 +14,7 @@ module.exports = function() {
             if (!req.body || !req.body.id)
                 return Promise.reject(new restify.InvalidContentError('Request body is required.'))
 
+            console.log('VLAN ID: ' + req.body.id);
             var promises = [];
             promises.push(
                 command.VlanCommand(
