@@ -1,0 +1,34 @@
+---
+
+vlans:
+  - id: 100
+    name: web_vlan
+  - id: 200
+    name: app_vlan
+
+hsrp:
+  - id: '100'
+    ip: 10.1.100.1
+  - id: 200
+    ip: 10.1.200.1
+
+ospf:
+  - vlan: 100
+    process: 2
+    area: 0.0.0.0
+    cost: 100
+  - vlan: 200
+    process: 2
+    area: 0.0.0.0
+    cost: 100
+
+portchannel:
+  - portchannel_id: 'port-channel10'
+    descr: po10 by Ansible
+    vlans: 100
+    mode: access
+    members:
+      - Ethernet2/22
+      - Ethernet2/23
+
+
