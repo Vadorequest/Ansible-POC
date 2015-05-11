@@ -1,5 +1,3 @@
 vlans:
-  - id: 100
-    name: web_vlan
-  - id: 200
-    name: app_vlan
+  - id: 1986
+    name: testVlans

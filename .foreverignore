@@ -1,0 +1,6 @@
+# Avoid to restart the server when using forever on some file changes.
+
+# General
+**/.idea/**
+**/.git/**
+**/yaml/**
