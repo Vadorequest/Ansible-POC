@@ -1,0 +1,154 @@
+{
+	"id": "d39d134a-c004-9f06-2d67-d8026959d5ab",
+	"name": "AnsiblePOC",
+	"description": "POSTMAN requests for Ansible API.",
+	"order": [
+		"f5cb55c0-9c1f-a6e9-9911-9939969afc53",
+		"a5f40d1e-048c-3fc4-ff78-a71a2f7449d1",
+		"c16d06ed-fd0d-4b7d-e354-badcb1123524",
+		"d61e57e2-ca04-fde5-edf9-9cd76fdad6d2"
+	],
+	"folders": [],
+	"timestamp": 1431373059959,
+	"synced": false,
+	"owner": "44567",
+	"sharedWithTeam": false,
+	"subscribed": false,
+	"remoteLink": "",
+	"public": false,
+	"write": true,
+	"requests": [
+		{
+			"id": "a5f40d1e-048c-3fc4-ff78-a71a2f7449d1",
+			"headers": "",
+			"url": "http://localhost:2222/api/experimental/vlans",
+			"pathVariables": {},
+			"preRequestScript": "",
+			"method": "POST",
+			"collectionId": "d39d134a-c004-9f06-2d67-d8026959d5ab",
+			"data": [
+				{
+					"key": "id",
+					"value": "120",
+					"type": "text",
+					"enabled": true
+				}
+			],
+			"dataMode": "urlencoded",
+			"name": "POST VLAN - FAIL name",
+			"description": "",
+			"descriptionFormat": "html",
+			"time": 1431538722001,
+			"version": 2,
+			"responses": [],
+			"tests": "",
+			"currentHelper": "normal",
+			"helperAttributes": {},
+			"collectionOwner": 0,
+			"synced": false
+		},
+		{
+			"id": "c16d06ed-fd0d-4b7d-e354-badcb1123524",
+			"headers": "",
+			"url": "http://localhost:2222/api/experimental/vlans",
+			"pathVariables": {},
+			"preRequestScript": "",
+			"method": "POST",
+			"collectionId": "d39d134a-c004-9f06-2d67-d8026959d5ab",
+			"data": [
+				{
+					"key": "name",
+					"value": "MyVlan1",
+					"type": "text",
+					"enabled": true
+				}
+			],
+			"dataMode": "urlencoded",
+			"name": "POST VLAN - FAIL id missing",
+			"description": "",
+			"descriptionFormat": "html",
+			"time": 1431538734813,
+			"version": 2,
+			"responses": [],
+			"tests": "",
+			"currentHelper": "normal",
+			"helperAttributes": {},
+			"collectionOwner": 0,
+			"synced": false
+		},
+		{
+			"id": "d61e57e2-ca04-fde5-edf9-9cd76fdad6d2",
+			"headers": "",
+			"url": "http://localhost:2222/api/experimental/vlans",
+			"pathVariables": {},
+			"preRequestScript": "",
+			"method": "POST",
+			"collectionId": "d39d134a-c004-9f06-2d67-d8026959d5ab",
+			"data": [
+				{
+					"key": "id",
+					"value": "-1",
+					"type": "text",
+					"enabled": true
+				},
+				{
+					"key": "name",
+					"value": "MyVlan1",
+					"type": "text",
+					"enabled": true
+				}
+			],
+			"dataMode": "urlencoded",
+			"name": "POST VLAN - FAIL id negative",
+			"description": "",
+			"descriptionFormat": "html",
+			"time": 1431547104011,
+			"version": 2,
+			"responses": [],
+			"tests": "",
+			"currentHelper": "normal",
+			"helperAttributes": {},
+			"collectionOwner": 0,
+			"synced": false
+		},
+		{
+			"id": "f5cb55c0-9c1f-a6e9-9911-9939969afc53",
+			"headers": "",
+			"url": "http://localhost:2222/api/experimental/vlans",
+			"preRequestScript": "",
+			"pathVariables": {},
+			"method": "POST",
+			"data": [
+				{
+					"key": "id",
+					"value": "120",
+					"type": "text",
+					"enabled": true
+				},
+				{
+					"key": "name",
+					"value": "MyVlan1",
+					"type": "text",
+					"enabled": true
+				},
+				{
+					"key": "filename",
+					"value": "myfilelll",
+					"type": "text",
+					"enabled": true
+				}
+			],
+			"dataMode": "urlencoded",
+			"version": 2,
+			"tests": "",
+			"currentHelper": "normal",
+			"helperAttributes": {},
+			"time": 1431547802121,
+			"name": "POST VLAN - SUCCESS",
+			"description": "",
+			"collectionId": "d39d134a-c004-9f06-2d67-d8026959d5ab",
+			"responses": [],
+			"synced": false
+		}
+	]
+}
