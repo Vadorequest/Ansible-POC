@@ -1,5 +1,5 @@
 module.exports = {
-    env: 'dev',
+    env: 'dev',// dev || prod
     default_ansible_filename: 'test',
     prod: {
         ansible_path: '/local/mnt/ansible_nxos/test/'
