@@ -2,7 +2,7 @@
  * File to run using "node app.js".
  *
  */
-var yamlWriter = require('./lib/model/yamlWriter');
+var yamlWriter = require('./lib/model/vlans/yamlWriter');
 yamlWriter.write(
     {
         vlans: [

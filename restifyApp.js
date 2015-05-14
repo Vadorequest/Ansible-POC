@@ -1,5 +1,5 @@
 var restify = require('restify');
-var yamlWriter = require('./lib/model/yamlWriter');
+var yamlWriter = require('./lib/model/vlans/yamlWriter');
 var _ = require('lodash');
 var post_all = require('./lib/controller/vlans/post-all');
 
