@@ -15,10 +15,10 @@ module.exports = function(server, config, env, log) {
 
 
   server.post('/api/experimental/vlans'
-    , model.vlans.cli()
+    //, model.vlans.cli()
     , controller.vlans.postAll())
   server.head('/api/experimental/vlans'
-    , model.vlans.cli()
+    //, model.vlans.cli()
     , controller.vlans.postAll())
 
 }
